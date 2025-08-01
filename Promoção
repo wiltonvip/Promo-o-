@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Pergunta Divertida</title>
+  <style>
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-family: "Segoe UI", sans-serif;
+      background: linear-gradient(to right, #fceabb, #f8b500);
+    }
+
+    h1 {
+      font-size: 2em;
+      margin-bottom: 40px;
+      color: #333;
+      text-shadow: 1px 1px 1px #fff;
+    }
+
+    .btn-container {
+      position: relative;
+      width: 300px;
+      height: 100px;
+    }
+
+    button {
+      position: absolute;
+      width: 100px;
+      height: 50px;
+      font-size: 1.1rem;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+    }
+
+    #yes {
+      background-color: #4CAF50;
+      color: white;
+      left: 30px;
+      top: 25px;
+    }
+
+    #no {
+      background-color: #f44336;
+      color: white;
+      left: 170px;
+      top: 25px;
+      transition: top 0.2s, left 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Você aceita sair comigo?</h1>
+  <div class="btn-container">
+    <button id="yes">Sim</button>
+    <button id="no">Não</button>
+  </div>
+
+  <script>
+    const noBtn = document.getElementById('no');
+    const yesBtn = document.getElementById('yes');
+    const container = document.querySelector('.btn-container');
+
+    container.addEventListener('mousemove', (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+
+      const dx = mouseX - (rect.left + rect.width / 2);
+      const dy = mouseY - (rect.top + rect.height / 2);
+      const distance = Math.hypot(dx, dy);
+
+      if (distance < 100) {
+        const angle = Math.atan2(dy, dx);
+        const moveX = Math.cos(angle) * 100;
+        const moveY = Math.sin(angle) * 60;
+
+        const containerRect = container.getBoundingClientRect();
+        let newLeft = noBtn.offsetLeft - moveX;
+        let newTop = noBtn.offsetTop - moveY;
+
+        // Impedir de sair da área
+        newLeft = Math.max(0, Math.min(container.clientWidth - noBtn.offsetWidth, newLeft));
+        newTop = Math.max(0, Math.min(container.clientHeight - noBtn.offsetHeight, newTop));
+
+        noBtn.style.left = `${newLeft}px`;
+        noBtn.style.top = `${newTop}px`;
+      }
+    });
+
+    yesBtn.addEventListener('click', () => {
+      window.location.href = "https://www.google.com"; // Redireciona se clicar em "Sim"
+    });
+
+    noBtn.addEventListener('click', () => {
+      window.location.href = "https://www.naoeraessaresposta.com"; // Redireciona se conseguir clicar em "Não"
+    });
+  </script>
+
+</body>
+</html>
